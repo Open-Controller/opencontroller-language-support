@@ -1,0 +1,25 @@
+{
+    "name": "opencontroller-language-support",
+    "displayName": "OpenController Language Support",
+    "description": "Open Controller language support",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.62.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "ocdef",
+            "aliases": ["OpenController Def", "ocdef"],
+            "extensions": [".ocdef"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "ocdef",
+            "scopeName": "source.ocdef",
+            "path": "./syntaxes/ocdef.tmLanguage.json"
+        }]
+    }
+}

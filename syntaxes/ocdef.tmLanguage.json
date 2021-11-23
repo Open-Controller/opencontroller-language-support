@@ -1,0 +1,869 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "OpenController Def",
+    "scopeName": "source.ocdef",
+	"fileTypes": [
+		".ocdef"
+	],
+	"patterns": [
+		{
+			"include": "#statements"
+		}
+	],
+	"repository": {
+		"statements": {
+			"patterns": [
+				{
+					"include": "#declaration"
+				},
+				{
+					"include": "#expression"
+				}
+			]
+		},
+		"expression": {
+			"name": "meta.expression.ocdef",
+			"patterns": [
+				{
+					"include": "#widget"
+				},
+				{
+					"include": "#string"
+				},
+				{
+					"include": "#struct-declaration"
+				},
+				{
+					"include": "#if-statement"
+				},
+				{
+					"include": "#literal"
+				},
+				{
+					"include": "#arrow-function"
+				},
+				{
+					"include": "#function-call"
+				},
+				{
+					"include": "#support-objects"
+				},
+				{
+					"include": "#identifiers"
+				},
+				{
+					"include": "#punctuation-comma"
+				},
+				{
+					"include": "#punctuation-accessor"
+				}
+			]
+		},
+		"if-expression": {
+			"name": "if-expression.expr.ocdef",
+			"begin": "\\b(if|else)\\s*",
+			"beginCaptures": {
+				"1": {
+					"name": "keyword.control.conditional.ocdef"
+				}
+			},
+			"end": "(?=\\{)",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.block.ocdef"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#expression"
+				}
+			]
+		},
+		"if-block": {
+			"name": "if-block.expr.ocdef",
+			"begin": "\\{",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.block.ocdef"
+				}
+			},
+			"end": "(?=\\})",
+			"patterns": [
+				{
+					"include": "#statements"
+				}
+			]
+		},
+		"if-statement": {
+			"name": "if-statement.expr.ocdef",
+			"begin": "(?=\\b(if|else)\\s*)",
+			"end": "\\}",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.block.ocdef"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#if-expression"
+				},
+				{
+					"include": "#if-block"
+				}
+			]
+		},
+		"declaration": {
+			"name": "meta.declaration.ocdef",
+			"patterns": [
+				{
+					"include": "#import-declaration"
+				}
+			]
+		},
+		"import-declaration": {
+			"name": "meta.import.ocdef",
+			"begin": "\\b(import)\\b",
+			"beginCaptures": {
+				"1": {
+					"name": "keyword.control.import.ocdef"
+				}
+			},
+			"end": "(?=;|$)",
+			"patterns": [
+				{
+					"include": "#string"
+				},
+				{
+					"name": "keyword.control.as.ocdef",
+					"match": "\\bas\\b"
+				}
+			]
+		},
+		"struct-declaration": {
+			"name": "meta.class.ocdef",
+			"begin": "\\b(?:(house)|(device)|(room)|(controller)|(displayInterface))\\b",
+			"beginCaptures": {
+				"1": {
+					"name": "storage.type.house.ocdef"
+				},
+				"2": {
+					"name": "storage.type.device.ocdef"
+				},
+				"3": {
+					"name": "storage.type.room.ocdef"
+				},
+				"4": {
+					"name": "storage.type.controller.ocdef"
+				},
+				"5": {
+					"name": "storage.type.displayInterface.ocdef"
+				}
+			},
+			"end": "(?<=\\})",
+			"endCaptures": {
+				"1": {
+					"name": "punctuation.definition.block.ocdef"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#struct-body"
+				}
+			]
+		},
+		"struct-body": {
+			"begin": "\\{",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.block.ocdef"
+				}
+			},
+			"end": "\\}",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.block.ocdef"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#field-declaration"
+				}
+			]
+		},
+		"field-declaration": {
+			"name": "meta.field.declaration.ocdef",
+			"begin": "[+\\-\\/\\*%$=<>_$[:alpha:]][_$[:alnum:]]*",
+			"beginCaptures": {
+				"0": {
+					"name": "variable.object.property.ocdef"
+				}
+			},
+			"end": "(?=$|[,);}\\]])",
+			"patterns": [
+				{
+					"include": "#expression"
+				}
+			]
+		},
+		"object-literal": {
+			"name": "meta.objectliteral.ocdef",
+			"begin": "\\{",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.block.ocdef"
+				}
+			},
+			"end": "\\}",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.block.ocdef"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#object-member"
+				}
+			]
+		},
+		"decl-block": {
+			"name": "meta.block.ocdef",
+			"begin": "\\{",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.block.ocdef"
+				}
+			},
+			"end": "\\}",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.block.ocdef"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#statements"
+				}
+			]
+		},
+		"parameter-name": {
+			"patterns": [
+				{
+					"match": "\\b([+\\-\\/\\*%$=<>_$[:alpha:]][_$[:alnum:]]*)\\b",
+					"captures": {
+						"1": {
+							"name": "variable.parameter.ocdef"
+						}
+					}
+				}
+			]
+		},
+		"function-parameters": {
+			"name": "meta.parameters.ocdef",
+			"begin": "\\(",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.parameters.begin.ocdef"
+				}
+			},
+			"end": "\\)",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.parameters.end.ocdef"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#parameter-name"
+				},
+				{
+					"name": "punctuation.separator.parameter.ocdef",
+					"match": ","
+				}
+			]
+		},
+		"support-objects": {
+			"patterns": [
+				
+			]
+		},
+		"function-call": {
+			"begin": "\\(([+\\-\\/\\*%$=<>_$[:alpha:]][_$[:alnum:]\\.]*)",
+			"beginCaptures": {
+				"0": {
+					"name": "meta.brace.round.ocdef"
+				},
+				"1": {
+					"name": "entity.name.function.ocdef"
+				}
+			},
+			"end": "\\)",
+			"endCaptures": {
+				"0": {
+					"name": "meta.brace.round.ocdef"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#expression"
+				}
+			]
+		},
+		"identifiers": {
+			"patterns": [
+				{
+					"name": "support.class.ocdef",
+					"match": "([+\\-\\/\\*%$=<>_$[:alpha:]][_$[:alnum:]]*)(?=\\s*\\.\\s*prototype\\b(?!\\$))"
+				},
+				{
+					"match": "(?x)(\\.)\\s*(?:\n  ([[:upper:]][_$[:digit:][:upper:]]*) |\n  ([+\\-\\/\\*%$=<>_$[:alpha:]][_$[:alnum:]]*)\n)(?=\\s*\\.\\s*[+\\-\\/\\*%$=<>_$[:alpha:]][_$[:alnum:]]*)",
+					"captures": {
+						"1": {
+							"name": "punctuation.accessor.ocdef"
+						},
+						"2": {
+							"name": "constant.other.object.property.ocdef"
+						},
+						"3": {
+							"name": "variable.other.object.property.ocdef"
+						}
+					}
+				},
+				{
+					"match": "(?x)(?:(\\.)\\s*)?([+\\-\\/\\*%$=<>_$[:alpha:]][_$[:alnum:]]*)(?=\\s*=\\s*( (async\\s+)|(function\\s*[(<])|(function\\s+)| ([+\\-\\/\\*%$=<>_$[:alpha:]][_$[:alnum:]]*\\s*=>)| ((<([^<>]|\\<[^<>]+\\>)+>\\s*)?\\(([^()]|\\([^()]*\\))*\\)(\\s*:\\s*(.)*)?\\s*=>)))",
+					"captures": {
+						"1": {
+							"name": "punctuation.accessor.ocdef"
+						},
+						"2": {
+							"name": "entity.name.function.ocdef"
+						}
+					}
+				},
+				{
+					"match": "(\\.)\\s*([[:upper:]][_$[:digit:][:upper:]]*)(?![_$[:alnum:]])",
+					"captures": {
+						"1": {
+							"name": "punctuation.accessor.ocdef"
+						},
+						"2": {
+							"name": "constant.other.property.ocdef"
+						}
+					}
+				},
+				{
+					"match": "(\\.)\\s*([+\\-\\/\\*%$=<>_$[:alpha:]][_$[:alnum:]]*)",
+					"captures": {
+						"1": {
+							"name": "punctuation.accessor.ocdef"
+						},
+						"2": {
+							"name": "variable.other.property.ocdef"
+						}
+					}
+				},
+				{
+					"match": "(?x)(?:\n  ([[:upper:]][_$[:digit:][:upper:]]*) |\n  ([+\\-\\/\\*%$=<>_$[:alpha:]][_$[:alnum:]]*)\n)(?=\\s*\\.\\s*[+\\-\\/\\*%$=<>_$[:alpha:]][_$[:alnum:]]*)",
+					"captures": {
+						"1": {
+							"name": "constant.other.object.ocdef"
+						},
+						"2": {
+							"name": "variable.other.object.ocdef"
+						}
+					}
+				},
+				{
+					"name": "constant.other.ocdef",
+					"match": "([[:upper:]][_$[:digit:][:upper:]]*)(?![_$[:alnum:]])"
+				},
+				{
+					"name": "variable.other.readwrite.ocdef",
+					"match": "[+\\-\\/\\*%$=<>_$[:alpha:]][_$[:alnum:]]*"
+				}
+			]
+		},
+		"object-member": {
+			"patterns": [
+				{
+					"name": "meta.object.member.ocdef",
+					"begin": "@[+\\-\\/\\*%$=<>_$[:alpha:]][_$[:alnum:]]*",
+					"beginCaptures": {
+						"0": {
+							"name": "punctuation.decorator.ocdef"
+						}
+					},
+					"end": "(?=$|[,);}\\]])",
+					"patterns": [
+						{
+							"include": "#expression"
+						}
+					]
+				}
+			]
+		},
+		"arrow-function": {
+			"patterns": [
+				{
+					"name": "meta.arrow.ocdef",
+					"begin": "(?x)\\s*(?=\\(([^()]|\\([^()]*\\))*\\)\\s*=>)",
+					"end": "(?==>)",
+					"patterns": [
+						{
+							"include": "#function-parameters"
+						},
+						{
+							"include": "#arrow-return-type"
+						}
+					]
+				},
+				{
+					"name": "meta.arrow.ocdef",
+					"begin": "=>",
+					"beginCaptures": {
+						"0": {
+							"name": "storage.type.function.arrow.ocdef"
+						}
+					},
+					"end": "(?=\\S)",
+					"patterns": [
+						{
+							"include": "#expression"
+						}
+					]
+				}
+			]
+		},
+		"punctuation-comma": {
+			"name": "punctuation.separator.comma.ocdef",
+			"match": ","
+		},
+		"punctuation-semicolon": {
+			"name": "punctuation.terminator.statement.ocdef",
+			"match": ";"
+		},
+		"punctuation-accessor": {
+			"name": "punctuation.accessor.ocdef",
+			"match": "\\."
+		},
+		"qstring-double": {
+			"name": "string.quoted.double.ocdef",
+			"begin": "\"",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.begin.ocdef"
+				}
+			},
+			"end": "(\")|((?:[^\\\\\\n])$)",
+			"endCaptures": {
+				"1": {
+					"name": "punctuation.definition.string.end.ocdef"
+				},
+				"2": {
+					"name": "invalid.illegal.newline.ocdef"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#string-character-escape"
+				}
+			]
+		},
+		"qstring-single": {
+			"name": "string.quoted.single.ocdef",
+			"begin": "'",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.begin.ocdef"
+				}
+			},
+			"end": "(\\')|((?:[^\\\\\\n])$)",
+			"endCaptures": {
+				"1": {
+					"name": "punctuation.definition.string.end.ocdef"
+				},
+				"2": {
+					"name": "invalid.illegal.newline.ocdef"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#string-character-escape"
+				}
+			]
+		},
+		"string": {
+			"patterns": [
+				{
+					"include": "#qstring-single"
+				},
+				{
+					"include": "#qstring-double"
+				}
+			]
+		},
+		"string-character-escape": {
+			"name": "constant.character.escape.ocdef",
+			"match": "\\\\(x\\h{2}|[0-2][0-7]{0,2}|3[0-6][0-7]?|37[0-7]?|[4-7][0-7]?|.|$)"
+		},
+		"literal": {
+			"name": "literal.ocdef",
+			"patterns": [
+				{
+					"include": "#numeric-literal"
+				},
+				{
+					"include": "#boolean-literal"
+				},
+				{
+					"include": "#array-literal"
+				},
+				{
+					"include": "#object-literal"
+				}
+			]
+		},
+		"array-literal": {
+			"name": "meta.array.literal.ocdef",
+			"begin": "\\[",
+			"beginCaptures": {
+				"0": {
+					"name": "meta.brace.square.ocdef"
+				}
+			},
+			"end": "\\]",
+			"endCaptures": {
+				"0": {
+					"name": "meta.brace.square.ocdef"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#expression"
+				}
+			]
+		},
+		"numeric-literal": {
+			"patterns": [
+				{
+					"match": "(?x)\n(?<!\\$)(?:\n  (?:\\b[0-9]+(\\.)[0-9]+[eE][+-]?[0-9]+\\b)| # 1.1E+3\n  (?:\\b[0-9]+(\\.)[eE][+-]?[0-9]+\\b)|       # 1.E+3\n  (?:\\B(\\.)[0-9]+[eE][+-]?[0-9]+\\b)|       # .1E+3\n  (?:\\b[0-9]+[eE][+-]?[0-9]+\\b)|            # 1E+3\n  (?:\\b[0-9]+(\\.)[0-9]+\\b)|                # 1.1\n  (?:\\b[0-9]+(\\.)\\B)|                      # 1.\n  (?:\\B(\\.)[0-9]+\\b)|                      # .1\n  (?:\\b[0-9]+\\b(?!\\.))                     # 1\n)(?!\\$)",
+					"captures": {
+						"0": {
+							"name": "constant.numeric.decimal.ocdef"
+						},
+						"1": {
+							"name": "meta.delimiter.decimal.period.ocdef"
+						},
+						"2": {
+							"name": "meta.delimiter.decimal.period.ocdef"
+						},
+						"3": {
+							"name": "meta.delimiter.decimal.period.ocdef"
+						},
+						"4": {
+							"name": "meta.delimiter.decimal.period.ocdef"
+						},
+						"5": {
+							"name": "meta.delimiter.decimal.period.ocdef"
+						},
+						"6": {
+							"name": "meta.delimiter.decimal.period.ocdef"
+						}
+					}
+				}
+			]
+		},
+		"boolean-literal": {
+			"patterns": [
+				{
+					"name": "constant.language.boolean.true.ocdef",
+					"match": "(?<!\\.|\\$)\\btrue\\b(?!\\$)"
+				},
+				{
+					"name": "constant.language.boolean.false.ocdef",
+					"match": "(?<!\\.|\\$)\\bfalse\\b(?!\\$)"
+				}
+			]
+		},
+		"widget-tag-attributes": {
+			"patterns": [
+				{
+					"include": "#widget-tag-attribute-name"
+				},
+				{
+					"include": "#widget-tag-attribute-assignment"
+				},
+				{
+					"include": "#widget-string-double-quoted"
+				},
+				{
+					"include": "#widget-string-single-quoted"
+				},
+				{
+					"include": "#widget-evaluated-code"
+				}
+			]
+		},
+		"widget-tag-attribute-name": {
+			"match": "(?x)\n  \\s*\n  ([_$a-zA-Z][-$\\w]*)\n  (?=\\s|=|/?>|/\\*|//)",
+			"captures": {
+				"1": {
+					"name": "entity.other.attribute-name.ocdef"
+				}
+			}
+		},
+		"widget-tag-attribute-assignment": {
+			"name": "keyword.operator.assignment.ocdef",
+			"match": "=(?=\\s*(?:'|\"|{|/\\*|//|\\n))"
+		},
+		"widget-string-double-quoted": {
+			"name": "string.quoted.double.ocdef",
+			"begin": "\"",
+			"end": "\"",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.begin.ocdef"
+				}
+			},
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.end.ocdef"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#widget-entities"
+				}
+			]
+		},
+		"widget-string-single-quoted": {
+			"name": "string.quoted.single.ocdef",
+			"begin": "'",
+			"end": "'",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.begin.ocdef"
+				}
+			},
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.end.ocdef"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#widget-entities"
+				}
+			]
+		},
+		"widget-entities": {
+			"patterns": [
+				{
+					"name": "constant.character.entity.ocdef",
+					"match": "(&)([a-zA-Z0-9]+|#[0-9]+|#x[0-9a-fA-F]+)(;)",
+					"captures": {
+						"1": {
+							"name": "punctuation.definition.entity.ocdef"
+						},
+						"3": {
+							"name": "punctuation.definition.entity.ocdef"
+						}
+					}
+				},
+				{
+					"name": "invalid.illegal.bad-ampersand.ocdef",
+					"match": "&"
+				}
+			]
+		},
+		"widget-evaluated-code": {
+			"name": "meta.embedded.expression.ocdef",
+			"begin": "{",
+			"end": "}",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.section.embedded.begin.ocdef"
+				}
+			},
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.section.embedded.end.ocdef"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#expression"
+				}
+			]
+		},
+		"widget-tag-attributes-illegal": {
+			"name": "invalid.illegal.attribute.ocdef",
+			"match": "\\S+"
+		},
+		"widget-tag-without-attributes": {
+			"name": "meta.tag.without-attributes.ocdef",
+			"begin": "(<)\\s*([_$a-zA-Z][-$\\w.]*(?<!\\.|-))\\s*(>)",
+			"end": "(</)\\s*([_$a-zA-Z][-$\\w.]*(?<!\\.|-))\\s*(>)",
+			"beginCaptures": {
+				"1": {
+					"name": "punctuation.definition.tag.begin.ocdef"
+				},
+				"2": {
+					"name": "entity.name.tag.ocdef"
+				},
+				"3": {
+					"name": "punctuation.definition.tag.end.ocdef"
+				}
+			},
+			"endCaptures": {
+				"1": {
+					"name": "punctuation.definition.tag.begin.ocdef"
+				},
+				"2": {
+					"name": "entity.name.tag.ocdef"
+				},
+				"3": {
+					"name": "punctuation.definition.tag.end.ocdef"
+				}
+			},
+			"contentName": "meta.widget.children.tsx",
+			"patterns": [
+				{
+					"include": "#widget-children"
+				}
+			]
+		},
+		"widget-tag-in-expression": {
+			"begin": "(?x)\n  (?<=[({\\[,?=>]|&&|\\|\\||\\?|\\Wreturn|^return|\\Wdefault|^)\\s*\n  (?!(<)\\s*([_$a-zA-Z][-$\\w.]*(?<!\\.|-))\\s*(>)) #look ahead is not start of tag without attributes\n  (?!<\\s*[+\\-\\/\\*%$=<>_$[:alpha:]][_$[:alnum:]]*((\\s+extends\\s+[^=>])|,)) # look ahead is not type parameter of arrow\n  (?=(<)\\s*\n  ([_$a-zA-Z][-$\\w.]*(?<!\\.|-))\n  (?=\\s+(?!\\?)|/?>))",
+			"end": "(/>)|(?:(</)\\s*([_$a-zA-Z][-$\\w.]*(?<!\\.|-))\\s*(>))",
+			"endCaptures": {
+				"0": {
+					"name": "meta.tag.ocdef"
+				},
+				"1": {
+					"name": "punctuation.definition.tag.end.ocdef"
+				},
+				"2": {
+					"name": "punctuation.definition.tag.begin.ocdef"
+				},
+				"3": {
+					"name": "entity.name.tag.ocdef"
+				},
+				"4": {
+					"name": "punctuation.definition.tag.end.ocdef"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#widget-tag"
+				}
+			]
+		},
+		"widget-child-tag": {
+			"begin": "(?x)\n  (?=(<)\\s*\n  ([_$a-zA-Z][-$\\w.]*(?<!\\.|-))\n  (?=\\s+(?!\\?)|/?>))",
+			"end": "(/>)|(?:(</)\\s*([_$a-zA-Z][-$\\w.]*(?<!\\.|-))\\s*(>))",
+			"endCaptures": {
+				"0": {
+					"name": "meta.tag.ocdef"
+				},
+				"1": {
+					"name": "punctuation.definition.tag.end.ocdef"
+				},
+				"2": {
+					"name": "punctuation.definition.tag.begin.ocdef"
+				},
+				"3": {
+					"name": "entity.name.tag.ocdef"
+				},
+				"4": {
+					"name": "punctuation.definition.tag.end.ocdef"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#widget-tag"
+				}
+			]
+		},
+		"widget-tag": {
+			"name": "meta.tag.ocdef",
+			"begin": "(?x)\n  (?=(<)\\s*\n  ([_$a-zA-Z][-$\\w.]*(?<!\\.|-))\n  (?=\\s+(?!\\?)|/?>))",
+			"end": "(?=(/>)|(?:(</)\\s*([_$a-zA-Z][-$\\w.]*(?<!\\.|-))\\s*(>)))",
+			"patterns": [
+				{
+					"begin": "(?x)\n  (<)\\s*\n  ([_$a-zA-Z][-$\\w.]*(?<!\\.|-))\n  (?=\\s+(?!\\?)|/?>)",
+					"beginCaptures": {
+						"1": {
+							"name": "punctuation.definition.tag.begin.ocdef"
+						},
+						"2": {
+							"name": "entity.name.tag.ocdef"
+						}
+					},
+					"end": "(?=[/]?>)",
+					"patterns": [
+						{
+							"include": "#comment"
+						},
+						{
+							"include": "#widget-tag-attributes"
+						},
+						{
+							"include": "#widget-tag-attributes-illegal"
+						}
+					]
+				},
+				{
+					"begin": "(>)",
+					"beginCaptures": {
+						"1": {
+							"name": "punctuation.definition.tag.end.ocdef"
+						}
+					},
+					"end": "(?=</)",
+					"contentName": "meta.widget.children.tsx",
+					"patterns": [
+						{
+							"include": "#widget-children"
+						}
+					]
+				}
+			]
+		},
+		"widget-tag-invalid": {
+			"name": "invalid.illegal.tag.incomplete.ocdef",
+			"match": "<\\s*>"
+		},
+		"widget-children": {
+			"patterns": [
+				{
+					"include": "#widget-tag-without-attributes"
+				},
+				{
+					"include": "#widget-child-tag"
+				},
+				{
+					"include": "#widget-tag-invalid"
+				},
+				{
+					"include": "#widget-evaluated-code"
+				},
+				{
+					"include": "#widget-entities"
+				}
+			]
+		},
+		"widget": {
+			"patterns": [
+				{
+					"include": "#widget-tag-without-attributes"
+				},
+				{
+					"include": "#widget-tag-in-expression"
+				},
+				{
+					"include": "#widget-tag-invalid"
+				}
+			]
+		}
+	}
+}
