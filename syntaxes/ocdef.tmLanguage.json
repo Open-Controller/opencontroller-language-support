@@ -61,7 +61,7 @@
 		},
 		"if-expression": {
 			"name": "if-expression.expr.ocdef",
-			"begin": "\\b(if|else)\\s*",
+			"begin": "\\b(if|else|elif)\\s*",
 			"beginCaptures": {
 				"1": {
 					"name": "keyword.control.conditional.ocdef"
@@ -96,7 +96,7 @@
 		},
 		"if-statement": {
 			"name": "if-statement.expr.ocdef",
-			"begin": "(?=\\b(if|else)\\s*)",
+			"begin": "(?=\\b(if|else|elif)\\s*)",
 			"end": "\\}",
 			"endCaptures": {
 				"0": {
