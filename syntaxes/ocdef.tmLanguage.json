@@ -923,6 +923,9 @@
 		"widget-children": {
 			"patterns": [
 				{
+					"include": "#comment"
+				},
+				{
 					"include": "#widget-tag-without-attributes"
 				},
 				{
@@ -941,6 +944,9 @@
 		},
 		"widget": {
 			"patterns": [
+				{
+					"include": "#comment"
+				},
 				{
 					"include": "#widget-tag-without-attributes"
 				},
