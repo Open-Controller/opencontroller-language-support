@@ -18,12 +18,18 @@
 				},
 				{
 					"include": "#expression"
+				},
+				{
+					"include": "#comment"
 				}
 			]
 		},
 		"expression": {
 			"name": "meta.expression.ocdef",
 			"patterns": [
+				{
+					"include": "#comment"
+				},
 				{
 					"include": "#widget"
 				},
@@ -75,6 +81,9 @@
 			},
 			"patterns": [
 				{
+					"include": "#comment"
+				},
+				{
 					"include": "#expression"
 				}
 			]
@@ -90,6 +99,9 @@
 			"end": "(?=\\})",
 			"patterns": [
 				{
+					"include": "#comment"
+				},
+				{
 					"include": "#statements"
 				}
 			]
@@ -104,6 +116,9 @@
 				}
 			},
 			"patterns": [
+				{
+					"include": "#comment"
+				},
 				{
 					"include": "#if-expression"
 				},
@@ -130,6 +145,12 @@
 			},
 			"end": "(?=;|$)",
 			"patterns": [
+				{
+					"include": "#single-line-comment-consuming-line-ending"
+				},
+				{
+					"include": "#comment"
+				},
 				{
 					"include": "#string"
 				},
@@ -167,6 +188,9 @@
 			},
 			"patterns": [
 				{
+					"include": "#comment"
+				},
+				{
 					"include": "#struct-body"
 				}
 			]
@@ -186,6 +210,9 @@
 			},
 			"patterns": [
 				{
+					"include": "#comment"
+				},
+				{
 					"include": "#field-declaration"
 				}
 			]
@@ -200,6 +227,9 @@
 			},
 			"end": "(?=$|[,);}\\]])",
 			"patterns": [
+				{
+					"include": "#comment"
+				},
 				{
 					"include": "#expression"
 				}
@@ -220,6 +250,9 @@
 				}
 			},
 			"patterns": [
+				{
+					"include": "#comment"
+				},
 				{
 					"include": "#object-member"
 				}
@@ -278,6 +311,9 @@
 				{
 					"name": "punctuation.separator.parameter.ocdef",
 					"match": ","
+				},
+				{
+					"include": "#comment"
 				}
 			]
 		},
@@ -303,6 +339,9 @@
 				}
 			},
 			"patterns": [
+				{
+					"include": "#comment"
+				},
 				{
 					"include": "#expression"
 				}
@@ -395,6 +434,9 @@
 					"end": "(?=$|[,);}\\]])",
 					"patterns": [
 						{
+							"include": "#comment"
+						},
+						{
 							"include": "#expression"
 						}
 					]
@@ -408,6 +450,9 @@
 					"begin": "(?x)\\s*(?=\\(([^()]|\\([^()]*\\))*\\)\\s*=>)",
 					"end": "(?==>)",
 					"patterns": [
+						{
+							"include": "#comment"
+						},
 						{
 							"include": "#function-parameters"
 						},
@@ -427,9 +472,48 @@
 					"end": "(?=\\S)",
 					"patterns": [
 						{
+							"include": "#single-line-comment-consuming-line-ending"
+						},
+						{
 							"include": "#expression"
 						}
 					]
+				}
+			]
+		},
+		"single-line-comment-consuming-line-ending": {
+			"begin": "(^[ \\t]+)?((\\#)(?:\\s*(?=\\s|$))?)",
+			"beginCaptures": {
+				"1": {
+					"name": "punctuation.whitespace.comment.leading.ocdef"
+				},
+				"2": {
+					"name": "comment.line.number-sign.ocdef"
+				},
+				"3": {
+					"name": "punctuation.definition.comment.ocdef"
+				}
+			},
+			"end": "(?=^)",
+			"contentName": "comment.line.number-sign.ocdef"
+		},
+		"comment": {
+			"patterns": [
+				{
+					"begin": "(^[ \\t]+)?((\\#)(?:\\s*(?=\\s|$))?)",
+					"beginCaptures": {
+						"1": {
+							"name": "punctuation.whitespace.comment.leading.ocdef"
+						},
+						"2": {
+							"name": "comment.line.number-sign.ocdef"
+						},
+						"3": {
+							"name": "punctuation.definition.comment.ocdef"
+						}
+					},
+					"end": "(?=$)",
+					"contentName": "comment.line.number-sign.ocdef"
 				}
 			]
 		},
@@ -586,6 +670,9 @@
 		},
 		"widget-tag-attributes": {
 			"patterns": [
+				{
+					"include": "#comment"
+				},
 				{
 					"include": "#widget-tag-attribute-name"
 				},
